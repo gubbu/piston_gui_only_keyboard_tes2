@@ -7,7 +7,7 @@
   + change app state after evaluating Message <T>
   
   the demo shows the standard gui counter example: a updated label shows a changeabble number, if a button is pressed by the user and one of the following mathmatical operation is conducted on it:
-  + add 1
-  + substract 1
-  + multiply with itseld(square), wrapping u128
-  + reset to 0 (*=0)
+ + add 1
+ + substract 1
+ + multiply with itseld(square), wrapping u128
+ + reset to 0 (*=0)
