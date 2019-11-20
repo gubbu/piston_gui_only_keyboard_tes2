@@ -1,7 +1,7 @@
 # piston_gui_only_keyboard_tes2
 ## modules and demo of their function in fn main():
-+ rendering text
- adding and using a data structure VerticalMenu, that allows for:
+### + rendering text
+### + adding and using the data structure "VerticalMenu", that allows for:
 + scrolling (with two keyboard keys) through a list of elements
 + select elements, that throw generic identifying Messages of type T, when selected (in demo).
 + change app state after evaluating Message <T>
