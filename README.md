@@ -1,8 +1,13 @@
 # piston_gui_only_keyboard_tes2
 ## modules and demo of their function in fn main():
 + rendering text
-+ adding and using a data structure, that allows for scrolling (with two keyboard keys) through a list of elements
-+ select elements, that throw generic identifying Message of type T, when selected (in demo).
-+ change app state after evaluating Message <T>
++ adding and using a data structure, that allows for:
+++scrolling (with two keyboard keys) through a list of elements
+++ select elements, that throw generic identifying Messages of type T, when selected (in demo).
+++ change app state after evaluating Message <T>
   
-  the demo shows the standard counter example: a label shows a number, that is updatet, and shown, if a button is pressed.
+  the demo shows the standard gui counter example: a updated label shows a changeabble number, if a button is pressed by the user and one of the following mathmatical operation is conducted on it:
+  + add 1
+  + substract 1
+  + multiply with itseld(square), wrapping u128
+  + reset to 0 (*=0)
