@@ -7,7 +7,13 @@ pub struct VerticalMenu<T: std::cmp::Eq + std::hash::Hash> {
     pub view_down: i64,
     pub block_width: f64,
     pub block_height: f64,
-    //the text String and its height as f64, and its color information
+    //explaining the tuple:
+    // the text String, its height as f64, its color rgba information: [0]: the rgba color, if selected
+    // [1]: the color, if selected.
+    // the key of type T in the hashmap is the ui-elements identifier that can bes used, to:
+    // a) identify the source of a event, make according changes to the underlying app state.
+    // b) modify the specific already added element, if its identifier is known.
+    // c) remove/delete the specific element, from the ui.
     pub options: std::collections::HashMap<T, (String, f64, [[f32; 4]; 2])>,
     pub selected_background: [f32; 4],
 }

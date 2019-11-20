@@ -32,7 +32,7 @@ fn main() {
         [1.0, 0.0, 0.0, 1.0],
         [0.0, 0.0, 0.0, 1.0],
     );
-    //the interactive buttons
+    //the interactive buttons: the interactivity logic is declared in the mainloop, if certain events are detected.
     test_gui.add_text(
         ExampleUiElements::ADD,
         String::from("ADD +"),
