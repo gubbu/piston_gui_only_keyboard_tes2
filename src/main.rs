@@ -21,7 +21,8 @@ fn main() {
         .build()
         .unwrap();
     //creating the vertical Menu, configuring, how many elements are visible at a time (view_up = 3 + view_down=2)=5, the size of the bitmap font pixels, the background of the currently selected element.
-    let mut test_gui = basic_keyboard_ui::VerticalMenu::new(3, 2, [2.0; 2], [0.0, 1.0, 1.0, 1.0]);
+    //now: make the background invisible: [0.0;4]
+    let mut test_gui = basic_keyboard_ui::VerticalMenu::new(3, 2, [2.0; 2], [0.0;4]);
     //the count number has to be stored over the whole runtime
     //it can be modified by this interactive demo application. Its the demo applications state.
     let mut count = 0i128;
@@ -59,7 +60,7 @@ fn main() {
         String::from("reset\nset back to 0."),
         //255, 208, 0
         [1.0, 0.0, 0.0, 1.0],
-        [1.0, 255.0 / 208.0, 0.0, 1.0],
+        [0.0, 255.0 / 208.0, 0.0, 1.0],
     );
 
     while let Some(e) = window.next() {
@@ -93,7 +94,7 @@ fn main() {
         }
         window.draw_2d(&e, |c, g, _| {
             //rendering the ui: at x=y=64.0 and a gap of 10.0 between the elements
-            test_gui.render(64.0, 64.0, 10.0, c.transform, g);
+            test_gui.render_static(64.0, 64.0, 10.0, c.transform, g, [1.0; 4]);
             //background rgba
             clear([1.0, 0.5, 0.5, 1.0], g);
             //rendering some static text in the background to demonstrate text_render functionality

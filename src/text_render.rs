@@ -171,7 +171,12 @@ pub mod text_render {
         if let Some(background_rgba) = background_rgba {
             rectangle(
                 background_rgba,
-                [x, y, 6.0 * block_width, 6.0 * block_height],
+                [
+                    x - block_width,
+                    y - block_height,
+                    7.0 * block_width,
+                    7.0 * block_height,
+                ],
                 transform,
                 graphics,
             );

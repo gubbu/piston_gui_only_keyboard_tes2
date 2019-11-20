@@ -36,6 +36,7 @@ impl<T: std::cmp::Eq + std::hash::Hash> VerticalMenu<T> {
         };
     }
 
+    ///render the menu: render view_up menu entry above and self.view_down-1 below the currently selected option
     pub fn render(
         &self,
         x: f64,
@@ -43,8 +44,10 @@ impl<T: std::cmp::Eq + std::hash::Hash> VerticalMenu<T> {
         gap: f64,
         transform: [[f64; 3]; 2],
         graphics: &mut impl piston_window::Graphics,
+        line_color: [f32; 4],
     ) {
         let i_length = self.options.len() as i64;
+        let old_y = y;
         for i in self.selected - self.view_up..self.selected + self.view_down {
             let pythons_index = ((i.abs() + i) / 2) % i_length
                 + (i_length - ((i.abs() - i) / 2) % i_length) % i_length;
@@ -55,10 +58,15 @@ impl<T: std::cmp::Eq + std::hash::Hash> VerticalMenu<T> {
                 background = Some(self.selected_background);
             }
             for (_, current_value) in self.options.iter().skip(pythons_index as usize).take(1) {
+                let mut big_gap = gap;
+                if pythons_index == self.selected {
+                    //element get elevated, if they are currently selected
+                    big_gap *= 2.0;
+                }
                 use super::text_render::text_render::draw_filled_string;
                 draw_filled_string(
                     &current_value.0,
-                    x,
+                    x + big_gap,
                     y,
                     self.block_width,
                     self.block_height,
@@ -67,47 +75,66 @@ impl<T: std::cmp::Eq + std::hash::Hash> VerticalMenu<T> {
                     transform,
                     graphics,
                 );
+                let line_color = current_value.2[foreground_index];
+                let middle = y + current_value.1 * 0.5;
+                piston_window::line(
+                    line_color,
+                    big_gap * 0.1,
+                    [x, middle, x + big_gap * 0.8, middle],
+                    transform,
+                    graphics,
+                );
                 y += current_value.1 + gap;
             }
         }
-        /*
-        for (_key, value) in self.options.iter().skip(self.selected as usize).take(1) {
-            use super::text_render::text_render::draw_filled_string;
-            draw_filled_string(
-                &value.0,
-                x,
-                y,
-                self.block_width,
-                self.block_height,
-                value.2[1],
-                None,
-                transform,
-                graphics,
-            );
-            y += value.1;
-        }
+        piston_window::line(line_color, gap * 0.1, [x, old_y, x, y], transform, graphics);
+    }
 
-        for (_key, value) in self
-            .options
-            .iter()
-            .skip(self.selected as usize + 1)
-            .take(self.view_size as usize - 1)
-        {
+    ///render the menu: render menu static: all options are always rendered, regardless of the view size
+    pub fn render_static(
+        &self,
+        x: f64,
+        mut y: f64,
+        gap: f64,
+        transform: [[f64; 3]; 2],
+        graphics: &mut impl piston_window::Graphics,
+        line_color: [f32; 4],
+    ) {
+        let i_length = self.options.len() as i64;
+        let old_y = y;
+        for (index, (_key, current_value)) in self.options.iter().enumerate() {
+            let mut foreground_index = 0;
+            let mut background = None;
+            let mut big_gap = gap;
+            if self.selected == index as i64{
+                foreground_index = 1;
+                background = Some(self.selected_background);
+                big_gap *= 2.0;
+            }
             use super::text_render::text_render::draw_filled_string;
             draw_filled_string(
-                &value.0,
-                x,
+                &current_value.0,
+                x + big_gap,
                 y,
                 self.block_width,
                 self.block_height,
-                value.2[0],
-                None,
+                current_value.2[foreground_index],
+                background,
                 transform,
                 graphics,
             );
-            y += value.1;
+            let line_color = current_value.2[foreground_index];
+            let middle = y + current_value.1 * 0.5;
+            piston_window::line(
+                line_color,
+                big_gap * 0.1,
+                [x, middle, x + big_gap * 0.8, middle],
+                transform,
+                graphics,
+            );
+            y += current_value.1 + gap;
         }
-        */
+        piston_window::line(line_color, gap * 0.1, [x, old_y, x, y], transform, graphics);
     }
 
     pub fn on_up(&mut self) -> Option<&T> {
